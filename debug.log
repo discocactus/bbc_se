@@ -1,0 +1,3 @@
+[0512/170438.624:ERROR:process_reader_win.cc(123)] NtOpenThread: {アクセス拒否} プロセスはオブジェクトのアクセスを要求しましたが、アクセス権が与えられていません。 (0xc0000022)
+[0512/170438.624:ERROR:exception_snapshot_win.cc(88)] thread ID 800 not found in process
+[0512/170438.624:WARNING:crash_report_exception_handler.cc(62)] ProcessSnapshotWin::Initialize failed
