@@ -297,3 +297,10 @@ bbc_se
 
 bbc_se.to_csv('BBC_SE.csv')
 
+
+# In[ ]:
+
+
+# driver を終了
+driver.quit()
+
