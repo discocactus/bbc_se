@@ -9,13 +9,15 @@
 import pandas as pd
 import sys
 import time
+import re
+import wget
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.select import Select
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
+# from selenium.webdriver.common.keys import Keys
+# from selenium.webdriver.support.select import Select
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
+# from selenium.webdriver.chrome.options import Options
 
 
 # In[ ]:
@@ -229,7 +231,7 @@ bbc_se = bbc_se.append(df)
 bbc_se
 
 
-# # 完成
+# # リスト完成
 
 # In[ ]:
 
@@ -283,7 +285,34 @@ for i in range(1, 642):
 # In[ ]:
 
 
+# driver を終了
+driver.quit()
+
+
+# In[ ]:
+
+
 bbc_se = bbc_se.reset_index(drop=True)
+
+
+# In[ ]:
+
+
+bbc_se['file_name'] = ""
+
+
+# In[ ]:
+
+
+bbc_se.loc[9, 'file_name']
+
+
+# In[ ]:
+
+
+for idx in range(len(bbc_se)):
+    bbc_se.loc[idx, 'file_name'] = '{0}_{1}.wav'.format(re.search(r'[0-9]+', bbc_se['URL'][idx]).group(),
+                                                        re.sub("[\\/:*?\"<>| `',.~!@#$%^&*;]", '_', bbc_se['Description'][idx]))
 
 
 # In[ ]:
@@ -298,9 +327,100 @@ bbc_se
 bbc_se.to_csv('BBC_SE.csv')
 
 
+# # ダウンロード
+# ファイル名使用禁止文字
+# \/：*?"<>|
+# 追加で使用したくない文字
+#  ',.!@#$%^&*;
 # In[ ]:
 
 
-# driver を終了
-driver.quit()
+bbc_se = pd.read_csv('BBC_SE.csv', index_col=0)
+
+
+# In[ ]:
+
+
+bbc_se['Description'][8]
+
+
+# In[ ]:
+
+
+re.sub("[\\/:*?\"<>| `',.~!@#$%^&*;]", '_', bbc_se['Description'][8])
+
+
+# In[ ]:
+
+
+bbc_se['URL'][8]
+
+
+# In[ ]:
+
+
+re.search(r'[0-9]+', bbc_se['URL'][8]).group()
+
+
+# In[ ]:
+
+
+'D:\BBC_SE\{0}_{1}.wav'.format(re.search(r'[0-9]+', bbc_se['URL'][8]).group(),
+                              re.sub("[\\/:*?\"<>| `',.~!@#$%^&*;]", '_', bbc_se['Description'][8]))
+
+
+# In[ ]:
+
+
+wget.download(url=bbc_se['URL'][8], out='D:\BBC_SE\{0}_{1}.wav'.format(
+    re.search(r'[0-9]+', bbc_se['URL'][8]).group(),
+    re.sub("[\\/:*?\"<>| `',.~!@#$%^&*;]", '_', bbc_se['Description'][8])))
+
+
+# In[ ]:
+
+
+failed = []
+
+
+# In[ ]:
+
+
+for idx in range(200, 1000):
+    try:
+        wget.download(url=bbc_se['URL'][idx], out='D:\BBC_SE\{0}'.format(bbc_se['file_name'][idx]))
+    except Exception as e:
+        print('\n{0}: {1}\n'.format(idx, e))
+        failed.append(idx)
+
+
+# In[ ]:
+
+
+failed
+
+
+# In[ ]:
+
+
+pd.Series(failed).to_csv('download_failed.csv')
+
+
+# In[ ]:
+
+
+bbc_se['file_name'][741]
+
+
+# In[ ]:
+
+
+idx = 741
+wget.download(url=bbc_se['URL'][idx], out='D:\BBC_SE\{0}'.format(bbc_se['file_name'][idx]))
+
+
+# In[ ]:
+
+
+list(range(110, 120))
 
