@@ -13,6 +13,8 @@ import re
 import wget
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+import matplotlib.pyplot as plt
+get_ipython().run_line_magic('matplotlib', 'inline')
 # from selenium.webdriver.common.keys import Keys
 # from selenium.webdriver.support.select import Select
 # from selenium.webdriver.support.ui import WebDriverWait
@@ -324,6 +326,30 @@ bbc_se
 # In[ ]:
 
 
+bbc_se.groupby('Category').count()
+
+
+# In[ ]:
+
+
+bbc_se['Duration (seconds)'].sum()
+
+
+# In[ ]:
+
+
+bbc_se.loc[2000:3000, 'Duration (seconds)'].sum()
+
+
+# In[ ]:
+
+
+bbc_se['Duration (seconds)'].plot()
+
+
+# In[ ]:
+
+
 bbc_se.to_csv('BBC_SE.csv')
 
 
@@ -386,7 +412,7 @@ failed = []
 # In[ ]:
 
 
-for idx in range(200, 1000):
+for idx in range(2013, 3000):
     try:
         wget.download(url=bbc_se['URL'][idx], out='D:\BBC_SE\{0}'.format(bbc_se['file_name'][idx]))
     except Exception as e:
@@ -423,4 +449,14 @@ wget.download(url=bbc_se['URL'][idx], out='D:\BBC_SE\{0}'.format(bbc_se['file_na
 
 
 list(range(110, 120))
+
+
+# In[ ]:
+
+
+# import sys, time
+for num, i in enumerate(range(100)):
+    sys.stdout.write("\r{0}".format(num))
+    sys.stdout.flush()
+    time.sleep(0.01)
 
