@@ -338,13 +338,31 @@ bbc_se['Duration (seconds)'].sum()
 # In[ ]:
 
 
-bbc_se.loc[2000:3000, 'Duration (seconds)'].sum()
+bbc_se.loc[6000:7000, 'Duration (seconds)'].sum()
+
+
+# In[ ]:
+
+
+bbc_se.loc[7000:8000, 'Duration (seconds)'].sum()
 
 
 # In[ ]:
 
 
 bbc_se['Duration (seconds)'].plot()
+
+
+# In[ ]:
+
+
+bbc_se.loc[6000:7000, 'Duration (seconds)'].plot()
+
+
+# In[ ]:
+
+
+bbc_se.loc[7000:8000, 'Duration (seconds)'].plot()
 
 
 # In[ ]:
@@ -412,9 +430,9 @@ failed = []
 # In[ ]:
 
 
-for idx in range(2013, 3000):
+for idx in range(8000, 10000):
     try:
-        wget.download(url=bbc_se['URL'][idx], out='D:\BBC_SE\{0}'.format(bbc_se['file_name'][idx]))
+        wget.download(url=bbc_se['URL'][idx], out='D:/BBC_SE/08001-10000/{0}'.format(bbc_se['file_name'][idx]))
     except Exception as e:
         print('\n{0}: {1}\n'.format(idx, e))
         failed.append(idx)
@@ -441,8 +459,8 @@ bbc_se['file_name'][741]
 # In[ ]:
 
 
-idx = 741
-wget.download(url=bbc_se['URL'][idx], out='D:\BBC_SE\{0}'.format(bbc_se['file_name'][idx]))
+idx = 7378
+wget.download(url=bbc_se['URL'][idx], out='D:/BBC_SE/06001-08000/{0}'.format(bbc_se['file_name'][idx]))
 
 
 # In[ ]:
