@@ -338,13 +338,13 @@ bbc_se['Duration (seconds)'].sum()
 # In[ ]:
 
 
-bbc_se.loc[6000:7000, 'Duration (seconds)'].sum()
+bbc_se.loc[8000:10000, 'Duration (seconds)'].sum()
 
 
 # In[ ]:
 
 
-bbc_se.loc[7000:8000, 'Duration (seconds)'].sum()
+bbc_se.loc[10000:12000, 'Duration (seconds)'].sum()
 
 
 # In[ ]:
@@ -356,13 +356,13 @@ bbc_se['Duration (seconds)'].plot()
 # In[ ]:
 
 
-bbc_se.loc[6000:7000, 'Duration (seconds)'].plot()
+bbc_se.loc[8000:10000, 'Duration (seconds)'].plot()
 
 
 # In[ ]:
 
 
-bbc_se.loc[7000:8000, 'Duration (seconds)'].plot()
+bbc_se.loc[10000:12000, 'Duration (seconds)'].plot()
 
 
 # In[ ]:
@@ -430,9 +430,9 @@ failed = []
 # In[ ]:
 
 
-for idx in range(8000, 10000):
+for idx in range(11894, 12000):
     try:
-        wget.download(url=bbc_se['URL'][idx], out='D:/BBC_SE/08001-10000/{0}'.format(bbc_se['file_name'][idx]))
+        wget.download(url=bbc_se['URL'][idx], out='D:/BBC_SE/10001-12000/{0}'.format(bbc_se['file_name'][idx]))
     except Exception as e:
         print('\n{0}: {1}\n'.format(idx, e))
         failed.append(idx)
@@ -442,6 +442,36 @@ for idx in range(8000, 10000):
 
 
 failed
+
+
+# In[ ]:
+
+
+bbc_se.loc[11894, 'file_name']
+
+
+# In[ ]:
+
+
+len(bbc_se.loc[10507, 'file_name'])
+
+
+# In[ ]:
+
+
+len(bbc_se.loc[10508, 'file_name'])
+
+
+# In[ ]:
+
+
+bbc_se['file_name'].map(lambda x: len(x)).plot()
+
+
+# In[ ]:
+
+
+bbc_se['file_name'][bbc_se['file_name'].map(lambda x: len(x)) > 220]
 
 
 # In[ ]:
