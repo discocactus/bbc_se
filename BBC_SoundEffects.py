@@ -929,8 +929,10 @@ tags.to_csv('BBC_SE_tags.csv')
 # In[ ]:
 
 
-tags_table = pd.read_csv('BBC_SE_tags.csv', index_col=0)
-tags_table
+# 書き出したファイルの再読み込み用
+# 形態素解析の実行後にテーブルを上書きしないように注意
+tags = pd.read_csv('BBC_SE_tags.csv', index_col=0)
+tags
 
 
 # In[ ]:
@@ -982,7 +984,52 @@ writer.save()
 # In[ ]:
 
 
-word_freq.most_common(30)
+# 減量
+exclude_pos = ['CC', 'CD', 'DT', 'IN', 'SYM', 'TO', ':']
+tags_reduced = tags[~tags['pos'].isin(exclude_pos)]
+tags_reduced = tags_reduced[tags_reduced['word'].apply(lambda x: len(str(x))) > 1]
+tags_reduced
+
+
+# In[ ]:
+
+
+word_freq = Counter(tags_reduced['word'])
+pos_freq = Counter(tags_reduced['pos'])
+lemma_freq = Counter(tags_reduced['lemma'])
+
+word_freq.most_common(100)
+
+
+# In[ ]:
+
+
+# 減量版の保存
+word_freq_table = pd.DataFrame.from_dict(word_freq, orient='index')
+word_freq_table = word_freq_table.sort_values(0, ascending=False).reset_index()
+word_freq_table.columns = ['word', 'freq']
+
+pos_freq_table = pd.DataFrame.from_dict(pos_freq, orient='index')
+pos_freq_table = pos_freq_table.sort_values(0, ascending=False).reset_index()
+pos_freq_table.columns = ['pos', 'freq']
+
+lemma_freq_table = pd.DataFrame.from_dict(lemma_freq, orient='index')
+lemma_freq_table = lemma_freq_table.sort_values(0, ascending=False).reset_index()
+lemma_freq_table.columns = ['lemma', 'freq']
+
+# エンコード指定なしで Excel 保存
+# 出力後に全セルの書式設定を文字列に変更しておいた方がよさそう
+writer = pd.ExcelWriter('BBC_SE_tags_freq_reduced.xlsx')
+word_freq_table.to_excel(writer, sheet_name='word', index=False)
+pos_freq_table.to_excel(writer, sheet_name='pos', index=False)
+lemma_freq_table.to_excel(writer, sheet_name='lemma', index=False)
+writer.save()
+
+
+# In[ ]:
+
+
+word_freq.most_common(100)
 
 
 # In[ ]:
